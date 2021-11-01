@@ -29,6 +29,7 @@ class Transactions extends Component {
       <th>To</th>
       <th>Amount (Sudo)</th>
       <th>Timestamp</th>
+      <th>File</th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +40,7 @@ class Transactions extends Component {
       <td><b style={{color: '#007bff'}}>0x{t.receiver}</b></td>
       <td><b style={{color: '#007bff'}}>{parseFloat(t.amount).toFixed(5)} </b></td>
       <td><b style={{color: '#007bff'}}>{t.time}</b></td>
+      <td><b style={{color: '#007bff'}}>{t.file}</b></td>
     </tr>
   ))}
     </tbody>

@@ -22,7 +22,8 @@ class Blockchain:
                  'timestamp': str(datetime.datetime.now()),
                  'nonce': nonce,
                  'previous_hash': previous_hash,
-                 'transactions': self.transactions}
+                 'transactions': self.transactions,
+                 'file' : ''}
         self.transactions = []
         self.chain.append(block)
         return block
@@ -61,11 +62,12 @@ class Blockchain:
             block_index += 1
         return True
 
-    def add_transaction(self, sender, receiver, amount, time):
+    def add_transaction(self, sender, receiver, amount, file):
         self.transactions.append({'sender': sender,
                                   'receiver': receiver,
                                   'amount': amount,
-                                  'time': str(datetime.datetime.now())})
+                                  'time': str(datetime.datetime.now()),
+                                  'file' : file})
         previous_block = self.get_last_block()
         return previous_block['index'] + 1
 
@@ -112,7 +114,8 @@ def mine_block(request):
                     'timestamp': block['timestamp'],
                     'nonce': block['nonce'],
                     'previous_hash': block['previous_hash'],
-                    'transactions': block['transactions']}
+                    'transactions': block['transactions'],
+                    'file' : block['file']}
     return JsonResponse(response)
 
 # Getting the full Blockchain
@@ -137,10 +140,10 @@ def is_valid(request):
 def add_transaction(request):
     if request.method == 'POST':
         received_json = json.loads(request.body)
-        transaction_keys = ['sender', 'receiver', 'amount','time']
+        transaction_keys = ['sender', 'receiver', 'amount','file']
         if not all(key in received_json for key in transaction_keys):
             return 'Some elements of the transaction are missing', HttpResponse(status=400)
-        index = blockchain.add_transaction(received_json['sender'], received_json['receiver'], received_json['amount'],received_json['time'])
+        index = blockchain.add_transaction(received_json['sender'], received_json['receiver'], received_json['amount'],received_json['file'])
         response = {'message': f'This transaction will be added to Block {index}'}
     return JsonResponse(response)
 
